@@ -3,93 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CSV'den Excel'e Dönüştürme</title>
+    <title>CSV'den Excel'e Dönüştür</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* Genel Sayfa Stili */
         body {
             font-family: Arial, sans-serif;
-            text-align: center;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f2f5;
         }
 
-        /* Konteyner Ayarları */
         .container {
-            max-width: 400px;
-            margin: 50px auto;
-            padding: 20px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 400px;
         }
 
-        /* Logo Stili */
-        .logo {
-            width: 150px;
+        h2 {
             margin-bottom: 20px;
         }
 
-        /* Form Elemanları */
-        select, input, button {
-            width: 100%;
+        select, input[type="file"], button {
+            margin: 10px 0;
             padding: 10px;
-            margin-top: 10px;
+            width: 100%;
             font-size: 16px;
             border-radius: 5px;
-            border: 1px solid #ddd;
+            border: 1px solid #ccc;
         }
 
-        select {
-            background-color: #fff;
-        }
-
-        /* Buton Stili */
         button {
-            background-color: #007bff;
+            background-color: #4CAF50;
             color: white;
             border: none;
             cursor: pointer;
-            transition: background 0.3s;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #45a049;
         }
 
-        /* Responsive (Mobil Uyumlu) */
-        @media (max-width: 480px) {
-            .container {
-                width: 90%;
-            }
+        .footer {
+            font-size: 12px;
+            color: #888;
+            margin-top: 15px;
+        }
+
+        .footer a {
+            color: #4CAF50;
+            text-decoration: none;
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <img src="{{ url_for('static', filename='logo.png') }}" class="logo">
-        <h2>CSV'den Excel'e Dönüştür</h2>
+<div class="container">
+    <h2>CSV'den Excel'e Dönüştür</h2>
+
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <label for="marketplace">Pazaryeri Seçin:</label>
+        <select id="marketplace" name="marketplace">
+            <option value="Amazon">Amazon</option>
+            <option value="Otto">Otto</option>
+        </select>
         
-        <form action="/upload" method="post" enctype="multipart/form-data">
-            <label for="marketplace">Pazaryeri Seçin:</label>
-            <select name="marketplace" id="marketplace" required>
-                <option value="amazon">Amazon</option>
-                <option value="otto">Otto</option>
-            </select>
+        <label for="file-type">Dosya Türü Seçin:</label>
+        <select id="file-type" name="file-type" onchange="toggleFileInput()">
+            <option value="csv">CSV</option>
+            <option value="xlsx">Excel</option>
+        </select>
 
-            <label for="file">CSV Dosyanızı Yükleyin:</label>
-            <input type="file" name="file" accept=".csv" required>
+        <label for="file-upload">Dosya Seçin:</label>
+        <input type="file" id="file-upload" name="file" disabled>
+        
+        <button type="submit">Dönüştür ve İndir</button>
+    </form>
+</div>
 
-            <button type="submit">Dönüştür ve İndir</button>
-        </form>
-    </div>
-        <footer>
-        <p style="margin-top: 20px; font-size: 14px; color: #666;">
-            Created by <a href="https://www.rehome.com.tr" target="_blank" style="text-decoration: none; color: #007bff; font-weight: bold;">Re.Ai Agency</a> - Version <span id="version">1.0.0</span>
-        </p>
-    </footer>
+<div class="footer">
+    <p>Created by <a href="https://www.rehome.com.tr" target="_blank">Re.Ai Agency</a> - Version 1.0.0</p>
+</div>
 
+<script>
+    function toggleFileInput() {
+        var fileType = document.getElementById("file-type").value;
+        var fileInput = document.getElementById("file-upload");
+
+        // Dosya türü seçildiğinde uygun dosya yükleme alanını aktif et
+        if (fileType === "csv") {
+            fileInput.disabled = false; // CSV seçildiyse dosya yükleme aktif
+        } else {
+            fileInput.disabled = true;  // Excel seçildiyse dosya yükleme pasif
+        }
+    }
+</script>
 
 </body>
 </html>
